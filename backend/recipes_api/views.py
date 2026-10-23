@@ -1,5 +1,5 @@
 from rest_framework import viewsets, mixins
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import AllowAny
 
 from .models import Recipe
 from .serializers import (

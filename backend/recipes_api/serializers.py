@@ -47,7 +47,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         ingredients_data = validated_data.pop('ingredients', [])
         tags_data = validated_data.pop('tags', [])
         author = self.context.get('request').user
-        recipe = Recipe.objects.create(**validated_data)
+        recipe = Recipe.objects.create(**validated_data, author=author)
         recipe_ingredients = [
             RecipeIngredient(
                 recipe=recipe,
@@ -118,6 +118,17 @@ class ReadRecipeSerializer(serializers.ModelSerializer):
         if not user or user.is_anonymous:
             return False
         return ShoppingListObject.objects.filter(user=user, recipe=obj).exists()
+
+
+class ShortRecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = (
+            'id',
+            'name',
+            # 'image',
+            'cooking_time',
+        )
 
 
 class ShoppingList(

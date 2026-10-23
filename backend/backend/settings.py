@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
     'djoser',
     'recipes_api',
     'ingredients_api',
@@ -135,11 +135,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email', 
+    'SEND_ACTIVATION_EMAIL': False,
+    'SERIALIZERS': {
+        'user': 'users_api.serializers.CustomUserSerializer',
+        'current_user': 'users_api.serializers.CustomUserSerializer',
+    },
+    'TOKEN_MODEL': 'rest_framework.authtoken.models.Token',
+    'PERMISSIONS': {
+        'activation': ['rest_framework.permissions.DenyAll'],
+        'password_reset': ['rest_framework.permissions.DenyAll'],
+        'password_reset_confirm': ['rest_framework.permissions.DenyAll'],
+    },
 }
